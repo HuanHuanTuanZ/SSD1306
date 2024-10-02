@@ -4,7 +4,7 @@ echo "Run Install"
 
 timedatectl set-timezone Asia/Shanghai
 apt-get install cron
-apt-get cmake
+apt-get install cmake
 apt-get install lm-sensors
 
 #DEV
@@ -17,3 +17,4 @@ make -j4
 cpack -G DEB
 sudo dpkg -i libwiringx*.deb
 
+chmod 777 /SSD1306/ -R
