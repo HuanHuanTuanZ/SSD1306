@@ -1,3 +1,7 @@
+/*
+	我真是服了，自己写的玩意个把月没看居然看不懂了
+	以后我一定多写注释
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "wiringx.h"
@@ -275,7 +279,7 @@ void *FASE_SHOW()
 		p = gmtime(&timep);
 		int year = 1900 + p->tm_year;
 		sprintf(time1, "%d-%d-%d  ", year, 1 + p->tm_mon, p->tm_mday);
-		sprintf(time2, "%d:%d:%d   ", (8 + p->tm_hour)%24, p->tm_min, p->tm_sec);
+		sprintf(time2, "%d:%d:%d   ", (8 + p->tm_hour) % 24, p->tm_min, p->tm_sec);
 		FILE *file0, *file1;
 		char CPU_CMD[16] = {0}, TEMP_CMD[16] = {0};
 		if ((file0 = popen(CPU, "r")) != NULL)
@@ -356,34 +360,34 @@ int main(void)
 	OLED_ShowString(0, 4, "Disk:");
 	OLED_ShowString(0, 6, "TTR:");
 	pthread_t Tid;
-	pthread_create(&Tid, NULL, FASE_SHOW, NULL);
+	pthread_create(&Tid, NULL, FASE_SHOW, NULL); // 创建一个新线程执行FASE_SHOW
 	while (1)
 	{
 
 		char MEM_CMD[16] = {0}, DISK_CMD[32] = {0}, DATE_CMD[16] = {0}, TIME_CMD[16] = {0};
 		FILE *file0, *file1;
 
-		if ((file0 = popen(MEM, "r")) != NULL)
+		if ((file0 = popen(MEM, "r")) != NULL) // 使用popen执行准备好的shell命令
 		{
-			while (fgets(MEM_CMD, 16, file0) != NULL)
+			while (fgets(MEM_CMD, 16, file0) != NULL) // 读取命令输出到缓冲区
 			{
 			}
 			pclose(file0);
 		}
-		if ((file1 = popen(DISK, "r")) != NULL)
+		if ((file1 = popen(DISK, "r")) != NULL) // 使用popen执行准备好的shell命令
 		{
-			while (fgets(DISK_CMD, 32, file1) != NULL)
+			while (fgets(DISK_CMD, 32, file1) != NULL) // 读取命令输出到缓冲区
 			{
 			}
 			pclose(file1);
 		}
 
-		pthread_mutex_lock(&mutex);
+		pthread_mutex_lock(&mutex); // 互斥锁
 
 		OLED_ShowString(32, 2, MEM_CMD);
 		OLED_ShowString(40, 4, DISK_CMD);
 		int Xread = 0;
-		Xread = wiringXI2CReadReg8(fd,OLED_DATA);
+		Xread = wiringXI2CReadReg8(fd, OLED_DATA);
 		if (Xread != 4)
 		{
 			ret = oled_init();
